@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { BaseEntity } from '../../helpers/BaseEntity.js';
+import { UserAddress } from '../../user-addresses/entities/user-address.entity.js';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -24,7 +25,10 @@ export class User extends BaseEntity {
   password: string;
 
   @Column({ type: 'varchar', nullable: true })
-  refreshToken: string | null;
+  refreshToken?: string | null;
+
+  @OneToMany(() => UserAddress, (userAddress) => userAddress.user)
+  userAddresses: Relation<UserAddress>;
 
   @BeforeInsert()
   @BeforeUpdate()
